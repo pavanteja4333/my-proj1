@@ -3,7 +3,7 @@ kind: Service
 metadata:
   annotations:
     argocd.argoproj.io/sync-options: Replace=true, Prune=false
-  name: {{ include "my-app.fullname" . }}
+  name: {{ include "my-app.fullname" . }}-chandednow
   labels:
     {{- include "my-app.labels" . | nindent 4 }}
 spec:
