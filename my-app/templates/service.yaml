@@ -12,7 +12,7 @@ spec:
     - port: {{ .Values.service.port }}
       targetPort: http
       protocol: TCP
-      name: http
+      name: https
   selector:
     {{- include "my-app.selectorLabels" . | nindent 4 }}
 
