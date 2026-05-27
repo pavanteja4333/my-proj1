@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: check-endpoint
-        image: busybox:latest
+        image: alpine:latest  # A lightweight image with curl available
         command: ["/bin/sh", "-c"]
         args:
           - |
