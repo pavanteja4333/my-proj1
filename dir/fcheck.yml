@@ -1,7 +1,7 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: presync-endpoint-check
+  name: syncfail-endpoint-check
   namespace: default           # Must be the same namespace as your application
   annotations:
     # 1. Declares this as a PreSync hook
