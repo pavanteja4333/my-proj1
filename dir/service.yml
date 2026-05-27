@@ -2,7 +2,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: apache-service
-  namespace: default
+  namespace: defaults
 spec:
   type: NodePort
   selector:
