@@ -1,0 +1,50 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: post-sync-endpoint-check
+  namespace: default           # Must be the same namespace as your application
+  annotations:
+    # 1. Declares this as a PostSync hook
+    argocd.argoproj.io/hook: PostSync
+    
+    # 2. Deletes the job if it succeeds, but cleans up old jobs before creating a new one
+    #argocd.argoproj.io/hook-delete-policy: BeforeHookCreation,HookSucceeded
+spec:
+  template:
+    metadata:
+      labels:
+        app: post-sync-checker
+    spec:
+      containers:
+      - name: check-endpoint
+        image: alpine:latest  # A lightweight image with curl available
+        command: ["/bin/sh", "-c"]
+        args:
+          - |
+            # 1. Install curl quietly and exit if package manager fails
+            echo "Installing curl..."
+            apk add --no-cache curl > /dev/null || { echo "❌ Failed to install curl"; exit 1; }
+            
+            # 2. Proceed with your health check loop
+            echo "Starting post-sync health check..."
+            URL="http://www.yahoo.com"  # Change this to your actual endpoint if needed
+            MAX_ATTEMPTS=3
+            TIMEOUT=5
+
+            for i in $(seq 1 $MAX_ATTEMPTS); do
+              echo "Attempt $i/$MAX_ATTEMPTS: Checking $URL..."
+              
+              # Perform curl check. -f fails on HTTP errors, -s hides progress bar, -o redirects output
+              if curl -fs -m $TIMEOUT "$URL" > /dev/null; then
+                echo "🟢 Success! Endpoint is healthy and reachable."
+                exit 0
+              fi
+              
+              echo "⚠️ Endpoint not ready yet. Retrying in 5 seconds..."
+              sleep 5
+            done
+
+            echo "❌ Error: Timed out waiting for endpoint to respond."
+            exit 1
+      restartPolicy: Never
+  # If the job script exits with 1, it will try only 1 more time before failing completely
