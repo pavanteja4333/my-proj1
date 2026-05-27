@@ -27,7 +27,7 @@ spec:
             
             # 2. Proceed with your health check loop
             echo "Starting pre-sync health check..."
-            URL="http://www.pathan.com"  # Change this to your actual endpoint if needed
+            URL="http://www.pathanffffffff.cum"  # Change this to your actual endpoint if needed
             MAX_ATTEMPTS=3
             TIMEOUT=5
 
