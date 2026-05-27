@@ -27,7 +27,7 @@ spec:
             
             # 2. Proceed with your health check loop
             echo "Starting post-sync health check..."
-            URL="http://www.yahoo.com"  # Change this to your actual endpoint if needed
+            URL="http://www.google.com"  # Change this to your actual endpoint if needed
             MAX_ATTEMPTS=3
             TIMEOUT=5
 
