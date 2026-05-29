@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: apache-web-app
+  namespace: default
+  labels:
+    app: apache-server
+spec:
+  replicas: 3 # Tells Kubernetes to always keep 3 instances running
+  selector:
+    matchLabels:
+      app: apache-server # Must match the template labels below
+  template:
+    metadata:
+      labels:
+        app: apache-server # The label attached to the pods
+    spec:
+      containers:
+        - name: apache-container
+          image: httpd:2.4 # Uses the official Apache image from Docker Hub
+          ports:
+            - containerPort: 80 # The port the Apache software listens on inside the container
+          resources:
+            limits:
+              memory: "128Mi"
+              cpu: "500m"
+            requests:
+              memory: "64Mi"
+              cpu: "250m"
